@@ -1,0 +1,18 @@
+docker exec -it mysayt-db-1 mysql -u root -p
+GRANT ALL PRIVILEGES ON game.* TO 'username'@'%';
+FLUSH PRIVILEGES;
+docker exec mysayt-db-1 sh -c 'exec mysqldump -u username -p"password" game > /tmp/game_backup.sql'
+Отлично! Теперь у пользователя username есть все необходимые права на базу данных game.
+
+Теперь попробуйте снова выполнить команду для создания дампа базы данных:
+docker exec mysayt-db-1 sh -c 'exec mysqldump -u username -p"password" game > /tmp/game_backup.sql'
+docker cp mysayt-db-1:/tmp/game_backup.sql /path/on/host/game_backup.sql
+Войдите в MySQL:
+docker exec -it mysayt-db-1 mysql -u root -p
+GRANT PROCESS ON *.* TO 'username'@'%';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'username'@'%';
+docker exec mysayt-db-1 sh -c 'exec mysqldump -u username -p"password" game > /tmp/game_backup.sql'
+docker cp mysayt-db-1:/tmp/game_backup.sql /path/on/host/game_backup.sql
+если у тебя проект в другом диске 
+docker cp mysayt-db-1:/tmp/game_backup.sql "E:\my sayt\game_backup.sql"
